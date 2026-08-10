@@ -38,13 +38,13 @@ pub use models::{Media, MediaKind, Tweet, User};
 
 use std::collections::HashSet;
 use std::path::Path;
-use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::Mutex;
+use std::sync::atomic::{AtomicBool, Ordering};
 use std::time::Duration;
 
-use base64::engine::general_purpose::URL_SAFE_NO_PAD;
 use base64::Engine;
-use serde_json::{json, Value};
+use base64::engine::general_purpose::URL_SAFE_NO_PAD;
+use serde_json::{Value, json};
 use url::Url;
 
 use api::QueryIds;
@@ -258,11 +258,11 @@ impl Twitter {
                     }
                 }
             }
-            if let Some(m) = max {
-                if tweets.len() >= m {
-                    tweets.truncate(m);
-                    break;
-                }
+            if let Some(m) = max
+                && tweets.len() >= m
+            {
+                tweets.truncate(m);
+                break;
             }
             match next_cursor {
                 Some(c) if !c.is_empty() && cursor.as_deref() != Some(&c) => {
@@ -297,10 +297,10 @@ impl Twitter {
         });
         if let Ok(resp) = result {
             let node = &resp["data"]["tweetResult"]["result"];
-            if !node.is_null() {
-                if let Ok(t) = Tweet::from_graphql_result(node) {
-                    return Ok(t);
-                }
+            if !node.is_null()
+                && let Ok(t) = Tweet::from_graphql_result(node)
+            {
+                return Ok(t);
             }
         }
         self.tweet_via_syndication(id)
@@ -409,10 +409,10 @@ fn collect_tweet(content: &Value, seen: &mut HashSet<String>, out: &mut Vec<Twee
     if result.is_null() {
         return;
     }
-    if let Ok(t) = Tweet::from_graphql_result(result) {
-        if seen.insert(t.id.clone()) {
-            out.push(t);
-        }
+    if let Ok(t) = Tweet::from_graphql_result(result)
+        && seen.insert(t.id.clone())
+    {
+        out.push(t);
     }
 }
 

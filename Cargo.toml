@@ -1,26 +1,26 @@
 [package]
 name = "twitter"
 version = "0.1.0"
-edition = "2021"
-rust-version = "1.80"
+edition = "2024"
+rust-version = "1.97"
 description = "Offline viewer and media downloader for X (Twitter). CLI + library: fetch posts and download all media from an account or from individual post URLs, then browse them offline."
 license = "MIT"
 readme = "README.md"
 repository = "https://github.com/twitter-rs/twitter"
 keywords = ["twitter", "x", "downloader", "offline", "media"]
 categories = ["command-line-utilities", "multimedia"]
-include = ["src/**", "Cargo.toml", "README.md", "LICENSE"]
+include = ["src/**", "Cargo.toml", "README.md", "LICENSE", "FINDINGS.md"]
 
 [dependencies]
-anyhow = "1"
-base64 = "0.22"
-clap = { version = "4", features = ["derive"] }
-regex = "1"
-reqwest = { version = "0.12", default-features = false, features = ["blocking", "rustls-tls"] }
-serde = { version = "1", features = ["derive"] }
-serde_json = "1"
-thiserror = "2"
-url = "2"
+anyhow = "1.0.104"
+base64 = "0.23.1"
+clap = { version = "4.6.6", features = ["derive"] }
+regex = "1.13.1"
+reqwest = { version = "0.13.4", default-features = false, features = ["blocking", "rustls", "query"] }
+serde = { version = "1.0.229", features = ["derive"] }
+serde_json = "1.0.151"
+thiserror = "2.0.20"
+url = "2.5.8"
 
 [lib]
 name = "twitter"

@@ -52,7 +52,7 @@ impl Tweet {
                 return Err(Error::TweetUnavailable(reason.to_string()));
             }
             Some(other) => {
-                return Err(Error::Api(format!("unexpected tweet result type: {other}")))
+                return Err(Error::Api(format!("unexpected tweet result type: {other}")));
             }
             None => return Err(Error::Api("missing __typename in tweet result".into())),
         }
@@ -101,11 +101,11 @@ impl Tweet {
     }
 
     pub fn from_syndication(v: &Value) -> Result<Tweet, Error> {
-        if let Some(errors) = v["errors"].as_array() {
-            if let Some(e) = errors.first() {
-                let msg = e["message"].as_str().unwrap_or("unavailable");
-                return Err(Error::TweetUnavailable(msg.to_string()));
-            }
+        if let Some(errors) = v["errors"].as_array()
+            && let Some(e) = errors.first()
+        {
+            let msg = e["message"].as_str().unwrap_or("unavailable");
+            return Err(Error::TweetUnavailable(msg.to_string()));
         }
         let id = v["id_str"].as_str().unwrap_or("").to_string();
         if id.is_empty() {

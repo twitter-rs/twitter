@@ -5,7 +5,7 @@ use std::thread;
 
 use serde::Serialize;
 
-use crate::{media_file_name, poster_file_name, Error, MediaKind, Tweet};
+use crate::{Error, MediaKind, Tweet, media_file_name, poster_file_name};
 
 #[derive(Serialize)]
 struct ViewMedia {

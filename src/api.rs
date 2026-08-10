@@ -6,8 +6,8 @@ use reqwest::blocking::Client;
 use reqwest::header::{HeaderMap, HeaderValue};
 use serde_json::Value;
 
-use crate::cookies::CookieJar;
 use crate::Error;
+use crate::cookies::CookieJar;
 
 pub const API_ORIGIN: &str = "https://x.com";
 pub const SYNDICATION_ORIGIN: &str = "https://cdn.syndication.twimg.com";
@@ -137,18 +137,18 @@ fn parse_json_response(resp: reqwest::blocking::Response) -> Result<Value, Error
                     body.chars().take(200).collect::<String>()
                 ))
             })?;
-            if let Some(errors) = v["errors"].as_array() {
-                if let Some(e) = errors.first() {
-                    let code = e["code"].as_i64().unwrap_or(0);
-                    let msg = e["message"].as_str().unwrap_or("graphql error");
-                    if code == 368 || msg.contains("invalid") {
-                        return Err(Error::InvalidRequest(msg.to_string()));
-                    }
-                    if code == 63 || code == 50 {
-                        return Err(Error::Forbidden);
-                    }
-                    return Err(Error::Api(msg.to_string()));
+            if let Some(errors) = v["errors"].as_array()
+                && let Some(e) = errors.first()
+            {
+                let code = e["code"].as_i64().unwrap_or(0);
+                let msg = e["message"].as_str().unwrap_or("graphql error");
+                if code == 368 || msg.contains("invalid") {
+                    return Err(Error::InvalidRequest(msg.to_string()));
                 }
+                if code == 63 || code == 50 {
+                    return Err(Error::Forbidden);
+                }
+                return Err(Error::Api(msg.to_string()));
             }
             Ok(v)
         }
