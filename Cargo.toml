@@ -1,6 +1,6 @@
 [package]
 name = "twitter"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2024"
 rust-version = "1.97"
 description = "Offline viewer and media downloader for X (Twitter). CLI + library: fetch posts and download all media from an account or from individual post URLs, then browse them offline."
